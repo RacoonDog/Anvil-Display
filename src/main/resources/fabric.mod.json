@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "anvil-display",
+  "version": "${version}",
+  "name": "Anvil Display",
+  "description": "Adds useful information about anvil mechanics to the tooltips of some items.",
+  "authors": [
+    {
+      "name": "Crosby",
+      "contact": {
+        "discord": "https://discord.gg/3GxfGcAJBN"
+      }
+    }
+  ],
+  "contact": {
+    "sources": "https://github.com/RacoonDog/anvildisplay",
+    "issues": "https://github.com/RacoonDog/anvildisplay/issues",
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/anvil-display",
+    "discord": "https://discord.gg/3GxfGcAJBN"
+  },
+  "license": "LGPL-3.0",
+  "icon": "assets/anvil-display/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "io.github.racoondog.anvildisplay.AnvilDisplay"
+    ]
+  },
+  "mixins": [
+    "anvil-display.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.13.0",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  }
+}
