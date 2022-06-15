@@ -11,7 +11,6 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,8 +36,8 @@ public abstract class ItemStackMixin {
             int uses = Util.costToUses(repairCost);
             NbtList enchantmentList = isBook ? tag.getList("StoredEnchantments", 10) : tag.getList("Enchantments", 10);
             if (enchantmentList.isEmpty()) return;
-            list.add(new TranslatableText("anvil-display.anvil_uses", Util.getFormatting(enchantmentList, uses, isBook).toString() + uses + Formatting.GRAY).formatted(Formatting.GRAY));
-            list.add(new TranslatableText("anvil-display.base_cost", Util.getFormatting(enchantmentList, uses, isBook).toString() + (isBook ? Util.getBaseCost(enchantmentList) + repairCost : repairCost) + Formatting.GRAY).formatted(Formatting.GRAY));
+            list.add(Text.translatable("anvil-display.anvil_uses", Util.getFormatting(enchantmentList, uses, isBook).toString() + uses + Formatting.GRAY).formatted(Formatting.GRAY));
+            list.add(Text.translatable("anvil-display.base_cost", Util.getFormatting(enchantmentList, uses, isBook).toString() + (isBook ? Util.getBaseCost(enchantmentList) + repairCost : repairCost) + Formatting.GRAY).formatted(Formatting.GRAY));
         }
     }
 }
