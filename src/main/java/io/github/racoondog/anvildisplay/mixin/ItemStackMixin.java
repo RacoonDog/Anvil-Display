@@ -37,8 +37,8 @@ public abstract class ItemStackMixin {
             int uses = Util.costToUses(repairCost);
             NbtList enchantmentList = isBook ? tag.getList("StoredEnchantments", 10) : tag.getList("Enchantments", 10);
             if (enchantmentList.isEmpty()) return;
-            list.add(new LiteralText("%sAnvil Uses: %s%d%s.".formatted(Formatting.GRAY, Util.getFormatting(enchantmentList, uses, isBook), uses, Formatting.GRAY)));
-            list.add(new LiteralText("%sBase Cost: %s%d%s.".formatted(Formatting.GRAY, Util.getFormatting(enchantmentList, uses, isBook), isBook ? Util.getBaseCost(enchantmentList) + repairCost : repairCost, Formatting.GRAY)));
+            list.add(new LiteralText("%sAnvil Uses: %s%d%s".formatted(Formatting.GRAY, Util.getFormatting(enchantmentList, uses, isBook), uses, Formatting.GRAY)));
+            list.add(new LiteralText("%sBase Cost: %s%d%s".formatted(Formatting.GRAY, Util.getFormatting(enchantmentList, uses, isBook), isBook ? Util.getBaseCost(enchantmentList) + repairCost : repairCost, Formatting.GRAY)));
         }
     }
 }
