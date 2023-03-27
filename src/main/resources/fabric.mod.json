@@ -8,7 +8,7 @@
     {
       "name": "Crosby",
       "contact": {
-        "discord": "https://discord.gg/3GxfGcAJBN"
+        "discord": "https://discord.gg/4RBmBCFSTc"
       }
     }
   ],
@@ -22,16 +22,13 @@
   "icon": "assets/anvil-display/icon.png",
   "environment": "client",
   "entrypoints": {
-    "client": [
-      "io.github.racoondog.anvildisplay.AnvilDisplay"
-    ]
   },
   "mixins": [
     "anvil-display.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.13.0",
-    "fabric": "*",
+    "fabric-resource-loader-v0": "*",
     "minecraft": "1.19.x",
     "java": ">=17"
   }

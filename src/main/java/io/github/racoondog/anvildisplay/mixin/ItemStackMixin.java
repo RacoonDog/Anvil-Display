@@ -13,31 +13,38 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
-    @Inject(method = "getTooltip", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILSOFT)
-    private void onGetTooltip(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> info, List<Text> list) {
+    @Shadow protected abstract int getHideFlags();
+
+    @Inject(method = "getTooltip", at = @At("TAIL"))
+    private void onGetTooltip(PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir) {
         ItemStack stack = (ItemStack) (Object) this;
+        if (Util.isHideEnchants(this.getHideFlags())) return; //Don't show info if enchants hideFlag is on
+
         Item item = stack.getItem();
         NbtCompound tag = stack.getNbt();
+
         if (tag == null) return;
         boolean isBook = item.equals(Items.ENCHANTED_BOOK);
         if (isBook && Util.isBookEmpty(tag)) return;
-        if (item.isEnchantable(stack) || isBook) {
-            int repairCost = tag.contains("RepairCost") ? tag.getInt("RepairCost") : 0;
-            int uses = Util.costToUses(repairCost);
-            NbtList enchantmentList = isBook ? tag.getList("StoredEnchantments", 10) : tag.getList("Enchantments", 10);
-            if (enchantmentList.isEmpty()) return;
-            list.add(Text.translatable("anvil-display.anvil_uses", Util.getFormatting(enchantmentList, uses, isBook).toString() + uses + Formatting.GRAY).formatted(Formatting.GRAY));
-            list.add(Text.translatable("anvil-display.base_cost", Util.getFormatting(enchantmentList, uses, isBook).toString() + (isBook ? Util.getBaseCost(enchantmentList) + repairCost : repairCost) + Formatting.GRAY).formatted(Formatting.GRAY));
-        }
+        if (!item.isEnchantable(stack) && !isBook) return;
+
+        NbtList enchantmentList = isBook ? tag.getList("StoredEnchantments", 10) : tag.getList("Enchantments", 10);
+        if (enchantmentList.isEmpty()) return;
+        int repairCost = tag.contains("RepairCost") ? tag.getInt("RepairCost") : 0;
+        int uses = Util.costToUses(repairCost);
+
+        List<Text> list = cir.getReturnValue();
+        list.add(Text.translatable("anvil-display.anvil_uses", Formatting.WHITE.toString() + uses + Formatting.GRAY).formatted(Formatting.GRAY));
+        list.add(Text.translatable("anvil-display.base_cost", Formatting.WHITE.toString() + (Util.getBaseCost(enchantmentList, isBook) + repairCost) + Formatting.GRAY).formatted(Formatting.GRAY));
     }
 }
